@@ -1,0 +1,289 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: meta-admin
+  namespace: pixel
+  selfLink: /apis/apps/v1/namespaces/pixel/deployments/meta-admin
+  uid: e4a75a74-8d3d-48cb-8baa-2c4c44853791
+  resourceVersion: '23947348'
+  generation: 3
+  creationTimestamp: '2022-12-05T12:12:53Z'
+  labels:
+    k8s-app: meta-admin
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"1"},"creationTimestamp":"2022-11-30T08:09:07Z","generation":1,"labels":{"k8s-app":"meta-admin"},"managedFields":[{"apiVersion":"apps/v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:k8s-app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{"f:matchLabels":{".":{},"f:k8s-app":{}}},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:k8s-app":{}},"f:name":{}},"f:spec":{"f:containers":{"k:{\"name\":\"meta-admin\"}":{".":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:securityContext":{".":{},"f:privileged":{}},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:imagePullSecrets":{".":{},"k:{\"name\":\"git-gogs\"}":{".":{},"f:name":{}}},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}},"manager":"dashboard","operation":"Update","time":"2022-11-30T08:09:07Z"},{"apiVersion":"apps/v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:deployment.kubernetes.io/revision":{}}},"f:status":{"f:availableReplicas":{},"f:conditions":{".":{},"k:{\"type\":\"Available\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:message":{},"f:reason":{},"f:status":{},"f:type":{}},"k:{\"type\":\"Progressing\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:message":{},"f:reason":{},"f:status":{},"f:type":{}}},"f:observedGeneration":{},"f:readyReplicas":{},"f:replicas":{},"f:updatedReplicas":{}}},"manager":"kube-controller-manager","operation":"Update","time":"2022-11-30T08:09:18Z"}],"name":"meta-admin","namespace":"pixel","resourceVersion":"22258901","selfLink":"/apis/apps/v1/namespaces/pixel/deployments/meta-admin","uid":"b0133bce-cb24-457b-8324-3d181467cdbd"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"k8s-app":"meta-admin"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"k8s-app":"meta-admin"},"name":"meta-admin"},"spec":{"containers":[{"command":["/bin/bash","-ec","[[
+      -f \"/opt/bitnami/scripts/git/entrypoint.sh\" ]] \u0026\u0026 source
+      \"/opt/bitnami/scripts/git/entrypoint.sh\"\nwhile true; do\n    cd /app
+      \u0026\u0026 git pull origin master\n    sleep
+      60\ndone\n"],"image":"docker.io/bitnami/git:2.37.3-debian-11-r0","imagePullPolicy":"IfNotPresent","name":"git-repo-syncer","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/app","name":"git-repository"}]},{"image":"SXKJ:32775/meta_admin","imagePullPolicy":"IfNotPresent","name":"meta-admin","resources":{},"securityContext":{"privileged":false},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/mnt/nfs","name":"metaverse"},{"mountPath":"/app","name":"git-repository"}]}],"dnsPolicy":"ClusterFirst","imagePullSecrets":[{"name":"git-gogs"}],"initContainers":[{"command":["/bin/bash","-ec","[[
+      -f \"/opt/bitnami/scripts/git/entrypoint.sh\" ]] \u0026\u0026 source
+      \"/opt/bitnami/scripts/git/entrypoint.sh\"\ngit clone
+      http://gogs.soaringnova.com/chenguilong/meta_admin.git --branch master
+      /app\n"],"image":"docker.io/bitnami/git:2.37.3-debian-11-r0","imagePullPolicy":"IfNotPresent","name":"git-clone-repository","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/app","name":"git-repository"}]}],"restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"name":"metaverse","persistentVolumeClaim":{"claimName":"metaverse-pvc"}},{"emptyDir":{},"name":"git-repository"}]}}},"status":{"availableReplicas":1,"conditions":[{"lastTransitionTime":"2022-11-30T08:09:18Z","lastUpdateTime":"2022-11-30T08:09:18Z","message":"Deployment
+      has minimum
+      availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"},{"lastTransitionTime":"2022-11-30T08:09:07Z","lastUpdateTime":"2022-11-30T08:09:18Z","message":"ReplicaSet
+      \"meta-admin-556f86bb89\" has successfully
+      progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"}],"observedGeneration":1,"readyReplicas":1,"replicas":1,"updatedReplicas":1}}
+  managedFields:
+    - manager: kubectl-client-side-apply
+      operation: Update
+      apiVersion: apps/v1
+      time: '2022-12-05T12:12:53Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:k8s-app: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:revisionHistoryLimit: {}
+          f:selector:
+            f:matchLabels:
+              .: {}
+              f:k8s-app: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:k8s-app: {}
+              f:name: {}
+            f:spec:
+              f:containers:
+                k:{"name":"git-repo-syncer"}:
+                  .: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/app"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                k:{"name":"meta-admin"}:
+                  .: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:securityContext:
+                    .: {}
+                    f:privileged: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/mnt/nfs"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"git-gogs"}:
+                  .: {}
+                  f:name: {}
+              f:initContainers:
+                .: {}
+                k:{"name":"git-clone-repository"}:
+                  .: {}
+                  f:command: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/app"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext: {}
+              f:terminationGracePeriodSeconds: {}
+              f:volumes:
+                .: {}
+                k:{"name":"git-repository"}:
+                  .: {}
+                  f:emptyDir: {}
+                  f:name: {}
+                k:{"name":"metaverse"}:
+                  .: {}
+                  f:name: {}
+                  f:persistentVolumeClaim:
+                    .: {}
+                    f:claimName: {}
+    - manager: dashboard
+      operation: Update
+      apiVersion: apps/v1
+      time: '2022-12-06T04:02:45Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:replicas: {}
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"git-repo-syncer"}:
+                  f:command: {}
+                k:{"name":"meta-admin"}:
+                  f:volumeMounts:
+                    k:{"mountPath":"/workspace"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: apps/v1
+      time: '2022-12-06T04:02:55Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:updatedReplicas: {}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: meta-admin
+  template:
+    metadata:
+      name: meta-admin
+      creationTimestamp: null
+      labels:
+        k8s-app: meta-admin
+    spec:
+      volumes:
+        - name: metaverse
+          persistentVolumeClaim:
+            claimName: metaverse-pvc
+        - name: git-repository
+          emptyDir: {}
+      initContainers:
+        - name: git-clone-repository
+          image: docker.io/bitnami/git:2.37.3-debian-11-r0
+          command:
+            - /bin/bash
+            - '-ec'
+            - >
+              [[ -f "/opt/bitnami/scripts/git/entrypoint.sh" ]] && source
+              "/opt/bitnami/scripts/git/entrypoint.sh"
+
+              git clone http://gogs.soaringnova.com/chenguilong/meta_admin.git
+              --branch master /app
+          resources: {}
+          volumeMounts:
+            - name: git-repository
+              mountPath: /app
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      containers:
+        - name: git-repo-syncer
+          image: docker.io/bitnami/git:2.37.3-debian-11-r0
+          command:
+            - /bin/bash
+            - '-ec'
+            - >
+              [[ -f "/opt/bitnami/scripts/git/entrypoint.sh" ]] && source
+              "/opt/bitnami/scripts/git/entrypoint.sh"
+
+              while true; do
+                  cd /app && git pull origin master
+                  sleep 5
+              done
+          resources: {}
+          volumeMounts:
+            - name: git-repository
+              mountPath: /app
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+        - name: meta-admin
+          image: SXKJ:32775/meta_admin
+          resources: {}
+          volumeMounts:
+            - name: metaverse
+              mountPath: /mnt/nfs
+            - name: git-repository
+              mountPath: /workspace
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: false
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: git-gogs
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+status:
+  observedGeneration: 3
+  replicas: 1
+  updatedReplicas: 1
+  readyReplicas: 1
+  availableReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2022-12-06T04:02:55Z'
+      lastTransitionTime: '2022-12-06T04:02:55Z'
+      reason: MinimumReplicasAvailable
+      message: Deployment has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2022-12-06T04:02:55Z'
+      lastTransitionTime: '2022-12-05T12:12:53Z'
+      reason: NewReplicaSetAvailable
+      message: ReplicaSet "meta-admin-6f484c6f98" has successfully progressed.

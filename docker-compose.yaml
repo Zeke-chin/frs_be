@@ -1,0 +1,17 @@
+version: '2'
+services:
+  meta_admin:
+    hostname: frs_be
+    container_name: frs_be
+    restart: always
+    image: SXKJ:32775/meta_admin
+    privileged: true
+    ipc: host
+    tty: true
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    ports:
+      - '50004:8080'
+      - '22004:22'
+
