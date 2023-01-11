@@ -4,7 +4,7 @@ services:
     hostname: frs_be
     container_name: frs_be
     restart: always
-    image: SXKJ:32775/meta_admin
+    image: registry.cn-hangzhou.aliyuncs.com/zekechin/frs_be
     privileged: true
     ipc: host
     tty: true
@@ -12,6 +12,6 @@ services:
     volumes:
       - ./:/workspace
     ports:
-      - '50004:8080'
-      - '22004:22'
+      - '8088:8080'
+      - '2022:22'
 
