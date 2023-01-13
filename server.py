@@ -1,6 +1,7 @@
 from fastapi import FastAPI#导入FastAPI
 from fastapi.middleware.cors import CORSMiddleware#导入cors解决跨域问题
 from utils.sx_log import format_print#导入utils.sx_log
+# 导入hello路由
 from app.routers.hello import *
 
 format_print()
@@ -15,7 +16,9 @@ app.add_middleware(#配置CORSMiddleware
     allow_headers=["*"],#允许跨域请求携带的 HTTP Request Headers 列表
 )
 
+# 标识位 表示完成已经初始化
 print('server init finish:)!!!')
+# 引入hello路由
 app.include_router(router_hello)
 
 # Get 健康检查
