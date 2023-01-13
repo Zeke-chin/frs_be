@@ -12,7 +12,6 @@ async def get_page(
 ):
     return {"page": page, "size": size}
 
-
 def page_help(data, page: int, size: int, total: int = None):
     if total is None:
         total = len(data)
