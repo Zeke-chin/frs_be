@@ -9,6 +9,7 @@ dependencies:
   - sasl=0.3.1
   - pip
   - psycopg2
+  - mysql-python
   - pip:
       - cmake
       - opencv-python
