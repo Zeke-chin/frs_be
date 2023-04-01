@@ -4,12 +4,20 @@ from PIL import Image, ImageDraw, ImageFont
 from matplotlib import pyplot as plt
 from .pose import get_head_pose
 
-color = (0, 255, 0)
+# color = (0, 255, 0)
 en2ch = {"female": "女", "male": "男", "without_mask": "无口罩", "with_mask": "有口罩",
          "mask_weared_incorrect": "口罩佩戴不正确", "mask_weared_correctly": "口罩佩戴正确"}
+global color
+color = (0, 255, 255)
 
-
-def draw_all(image, result):
+def draw_all(image, result, status_code):
+    global color
+    if status_code == 1: # 黄色
+        color = (0, 255, 255)
+    elif status_code == 3: # 绿色
+        color = (0, 255, 0)
+    elif status_code == -1: # 红色
+        color = (0, 0, 255)
     draw_pipline = []
     if result["box"]:
         image_ = draw_box(image, result)  # bv = box_val(result)
@@ -26,13 +34,17 @@ def draw_all(image, result):
     return cv_put_text_pipline(image_, draw_pipline)
 
 
-def cv_put_text_pipline(img, pipline, text_size=1, text_color=color, text_weight=1):
+def cv_put_text_pipline(img, pipline, text_size=1, text_weight=1):
+    global color
+    text_color = color
     for text, position in pipline:
         cv2.putText(img, text, position, cv2.FONT_HERSHEY_COMPLEX, text_size, text_color, text_weight)
     return img
 
 
-def cv2AddChineseText(img, pipline, textColor=color, textSize=30):
+def cv2AddChineseText(img, pipline, textSize=30):
+    global color
+    textColor = color
     # def cv2AddChineseText(img, pipline,box, textColor=color, textSize=30):
     image_pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     # 创建一个可以在给定图像上绘图的对象
@@ -48,6 +60,7 @@ def cv2AddChineseText(img, pipline, textColor=color, textSize=30):
 
 
 def draw_box(image, result):
+    global color
     box_dict = result['box']
     l, t, r, b = box_dict['x_min'], box_dict['y_min'], box_dict['x_max'], box_dict['y_max']
     cv2.rectangle(img=image, pt1=(l, t), pt2=(r, b), color=color, thickness=2)

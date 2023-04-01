@@ -1,4 +1,3 @@
-
 import logging
 
 
@@ -10,3 +9,5 @@ formatter = logging.Formatter(
 )
 ch.setFormatter(formatter)
 logger.addHandler(ch) #将日志输出至屏幕
+
+

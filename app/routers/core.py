@@ -6,6 +6,10 @@ from app import schemas, get_db, crud
 from utils import web_try, timeit
 from fastapi import APIRouter
 from app.common.validation import *
+from fastapi import FastAPI, WebSocket
+from fastapi.responses import StreamingResponse
+import asyncio
+import cv2
 
 router_video = APIRouter(prefix="/video", tags=["video-返回视频流"], )
 
@@ -20,3 +24,9 @@ async def video_feed():
 def screenshot():
     return crud.screenshot()
 
+# @router_video.websocket("/ws")
+# async def websocket_video(websocket: WebSocket):
+#     await websocket.accept()
+#     async for frame_data in crud.generate_video_wx():
+#         print("Sending frame")
+#         await websocket.send_bytes(frame_data)

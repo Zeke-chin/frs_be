@@ -1,20 +1,27 @@
+import time
 from threading import Thread
 from compreface.service import RecognitionService
 import cv2
 from .draw import draw_all
+from .pose import get_head_pose
+import random
+from utils.log import lr_init
 
+logger = lr_init()
 
 class ThreadedCamera:
     def __init__(self, url, cf_rec: RecognitionService):
         self.frame = cv2.imread("/compre_face/steven.jpeg")
         self.frame_draw_msg = cv2.imread("/compre_face/steven.jpeg")
         self.active = True
+        self.current_instruction = None  # 当前指令
+        self.status_code = 0  # 初始化状态码
         self.results = []
         self.capture = cv2.VideoCapture(url)  # self.capture 定义为一个cv2.VideoCapture()对象
         self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 2)  # 设置缓冲区大小
 
         # 初始化人脸识别服务
-        self.recognition: cf_rec
+        self.recognition = cf_rec
 
         self.FPS = 1 / 30
 
@@ -34,12 +41,16 @@ class ThreadedCamera:
 
             # 对人脸处理
             if self.results and status:
+                if self.status_code == 0:
+                    self.generate_instruction()
+                    self.status_code = 1
                 results = self.results
-                print(results)
+                # print(self.)
                 for result in results:
-                    self.frame_draw_msg = draw_all(self.frame, result)
-
-            # cv2.imshow('CompreFace demo', self.frame)  # time.sleep(self.FPS)  #  # # 按下ESC键退出  # if cv2.waitKey(1) & 0xFF == 27:  #     self.capture.release()  #     cv2.destroyAllWindows()  #     self.active = False
+                    self.frame_draw_msg = draw_all(self.frame, result, self.status_code)
+            else:
+                self.frame_draw_msg = self.frame
+                self.status_code = 0
 
     def is_active(self):
         return self.active
@@ -53,13 +64,29 @@ class ThreadedCamera:
             byte_im = im_buf_arr.tobytes()
             data = self.recognition.recognize(byte_im)
             self.results = data.get('result')
+            if self.status_code == 1:
+                self.check_liveness(get_head_pose(self.results[0]['pose']))
+            print(self.status_code)
+            print(self.current_instruction)
         except Exception as e:
             pass
 
+    def check_liveness(self, pose):
+        elapsed_time = time.time() - self.instruction_start_time
 
-if __name__ == '__main__':
-    # args = parseArguments()
-    # threaded_camera = ThreadedCamera(args.api_key, args.host, args.port)
-    threaded_camera = ThreadedCamera("baa6dd79-221f-468a-831b-0c2780377d3c", "http://192.168.192.86", "8000")
-    while threaded_camera.is_active():
-        threaded_camera.update()
+        if elapsed_time <= 8:
+            if self.current_instruction in pose:
+                self.status_code = 3
+                self.current_instruction = None
+                logger.info(f"{self.results[0]['subjects'][0]['subject']} 验证成功")
+                return
+        else:
+            self.status_code = -1
+            self.current_instruction = None
+            logger.error(f"{self.results[0]['subjects'][0]['subject']} 验证失败")
+
+
+
+    def generate_instruction(self):
+        self.current_instruction = random.choice(['up', 'down', 'left', 'right'])
+        self.instruction_start_time = time.time()

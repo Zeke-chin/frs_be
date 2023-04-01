@@ -47,6 +47,21 @@ async def generate_video() -> Generator[bytes, None, None]:
             pass
         await asyncio.sleep(threaded_camera.FPS * 1.5)
 
+# async def generate_video_wx() -> Generator[bytes, None, None]:
+#     while threaded_camera.is_active():
+#         # 获取处理后的帧
+#         threaded_camera.update()
+#         processed_frame = threaded_camera.frame_draw_msg
+#
+#         # 将处理后的帧发送到客户端
+#         try:
+#             ret, buffer = cv2.imencode('.jpg', processed_frame)
+#             # ret, buffer = cv2.imencode('.jpg', processed_frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+#             frame = buffer.tobytes()
+#             yield frame
+#         except Exception as e:
+#             pass
+#         await asyncio.sleep(threaded_camera.FPS)
 
 def screenshot():
     threaded_camera.update()

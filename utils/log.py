@@ -1,7 +1,10 @@
 # coding=utf-8
 # Powered by SoaringNova Technology Company
-import datetime
 import sys
+
+import logging
+import datetime
+from pathlib import Path
 
 
 def format_print():
@@ -23,3 +26,27 @@ def format_print():
 
     sys.stdout = GeneralWriter(sys.stdout)
     sys.stderr = GeneralWriter(sys.stdout)
+
+
+# 设置日志文件的名称和位置
+def log_init():
+    root = Path(__file__).parent.parent / "logs"
+    if not root.exists():
+        root.mkdir()
+    log_file = str(root / f"log_{str(datetime.datetime.now().date())}.log")
+    # print(str(root/log_file))
+    logging.basicConfig(filename=log_file, level=logging.INFO,
+                        format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S')
+
+    logging.info(f'{datetime.datetime.now()} 项目启动')
+    return logging
+
+from loguru import logger
+def lr_init():
+    root = Path(__file__).parent.parent / "logs"
+    if not root.exists():
+        root.mkdir()
+    log_file = str(root / f"log_{str(datetime.datetime.now().date())}.log")
+    logger.add(log_file, rotation="1 MB")
+    logger.info(f'{datetime.datetime.now()} 项目启动')
+    return logger
