@@ -4,8 +4,7 @@ services:
     hostname: frs_be
     container_name: frs_be
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/sxtest/schoolcert:gpu
-    # image: frs_be
+    image: frs_be
     privileged: true
     ipc: host
     tty: true
