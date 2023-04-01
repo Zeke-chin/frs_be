@@ -13,12 +13,13 @@ DB_NAME = config.get('DATABASE', 'DB_NAME')
 HOST = config.get('DATABASE', 'HOST')
 PORT = config.get('DATABASE', 'PORT')
 
-SQLALCHEMY_DATABASE_URI = f"mysql://{USER}:{PWD}@{HOST}:{PORT}/{DB_NAME}"
+SQLALCHEMY_DATABASE_URI = f"postgresql://{USER}:{PWD}@{HOST}:{PORT}/{DB_NAME}"
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base(bind=engine)
+Base = declarative_base()
+
 
 class BaseModel(Base):
     __abstract__ = True
@@ -35,3 +36,13 @@ class BaseModel(Base):
         db.commit()
         db.flush()
         db.refresh(self)
+
+    def set_field(self, data: Optional[dict] = None):
+        for key in self.__class__.__dict__.keys():
+            if key in data:
+                if data[key] is None:
+                    continue
+            if not key.startswith('_') and key in data:
+                setattr(self, key, data[key])
+            if hasattr(self, 'update_time'):
+                setattr(self, 'update_time', time.time())

@@ -1,10 +1,11 @@
 version: '2'
 services:
-  meta_admin:
+  frs_be:
     hostname: frs_be
     container_name: frs_be
     restart: always
-    image: registry.cn-hangzhou.aliyuncs.com/zekechin/frs_be
+    image: registry.cn-hangzhou.aliyuncs.com/sxtest/schoolcert:gpu
+    # image: frs_be
     privileged: true
     ipc: host
     tty: true
@@ -12,6 +13,6 @@ services:
     volumes:
       - ./:/workspace
     ports:
-      - '8088:8080'
-      - '2022:22'
+      - '3080:8080'
+      - '3022:22'
 

@@ -1,1 +1,1 @@
-from app.schemas.human import *
+from .user import *
