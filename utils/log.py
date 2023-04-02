@@ -41,12 +41,24 @@ def log_init():
     logging.info(f'{datetime.datetime.now()} 项目启动')
     return logging
 
+
 from loguru import logger
+import datetime
+from pathlib import Path
+
+
 def lr_init():
     root = Path(__file__).parent.parent / "logs"
     if not root.exists():
         root.mkdir()
-    log_file = str(root / f"log_{str(datetime.datetime.now().date())}.log")
-    logger.add(log_file, rotation="1 MB")
+
+    # 添加时间戳到日志文件名
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_file = str(root / f"log_{timestamp}.log")
+
+    # 自定义日志格式
+    log_format = "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {message}"
+
+    logger.add(log_file, rotation="1 MB", format=log_format)
     logger.info(f'{datetime.datetime.now()} 项目启动')
     return logger

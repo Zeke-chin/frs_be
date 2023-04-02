@@ -84,7 +84,7 @@ class ThreadedCamera:
             if self.current_instruction in pose:
                 self.status_code = 3
                 self.current_instruction = None
-                logger.info(f"{self.results[0]['subjects'][0]['subject']} 验证成功")
+                logger.success(f"{self.results[0]['subjects'][0]['subject']} 验证成功")
                 return
         else:
             self.status_code = -1
