@@ -1,11 +1,11 @@
 name: py38
 channels:
-  - defaults
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
   - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - defaults
 dependencies:
   - ipython=8.10.0
   - psycopg2=2.9.5
@@ -63,4 +63,6 @@ dependencies:
       - websockets==10.4
       - yarg==0.1.9
       - loguru
+      - uvicorn[standard]
+      - gunicorn
 prefix: /opt/conda/envs/py38

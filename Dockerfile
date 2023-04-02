@@ -56,21 +56,40 @@ RUN curl -o ~/miniconda.sh -O  https://mirrors.bfsu.edu.cn/anaconda/miniconda/Mi
 
 RUN ln /opt/conda/bin/conda /usr/local/bin/conda
 RUN conda init zsh
-RUN conda install mamba -n base -c conda-forge
+RUN echo "\
+channels: \n\
+  - defaults \n\
+show_channel_urls: true \n\
+channel_alias: https://anaconda.mirrors.sjtug.sjtu.edu.cn/ \n\
+default_channels: \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/main \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/free \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/mro \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/msys2 \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/pro \n\
+  - https://anaconda.mirrors.sjtug.sjtu.edu.cn/pkgs/r \n\
+custom_channels: \n\
+  conda-forge: https://anaconda.mirrors.sjtug.sjtu.edu.cn/conda-forge \n\
+  soumith: https://anaconda.mirrors.sjtug.sjtu.edu.cn/cloud/soumith \n\
+  bioconda: https://anaconda.mirrors.sjtug.sjtu.edu.cn/cloud/bioconda \n\
+  menpo: https://anaconda.mirrors.sjtug.sjtu.edu.cn/cloud/menpo \n\
+  viscid-hub: https://anaconda.mirrors.sjtug.sjtu.edu.cn/cloud/viscid-hub \n\
+  atztogo: https://anaconda.mirrors.sjtug.sjtu.edu.cn/cloud/atztogo \n\
+" > /root/.condarc
+RUN conda install mamba -n base -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
 RUN ln /opt/conda/bin/mamba /usr/local/bin/mamba && mamba init zsh
-
 
 FROM builder1 as builder2
 
 ENV WORKDIR /workspace
 WORKDIR ${WORKDIR}
 ADD environment.yml /environment.yml
-RUN mamba update -n base -c defaults conda -y && mamba env create -f /environment.yml && rm -rf /root/.cache
+RUN mamba update -n base conda mamba -y && mamba env create -f /environment.yml && rm -rf /root/.cache
 
 RUN echo "\
 [program:be]\n\
 directory=/workspace\n\
-command=/opt/conda/envs/py38/bin/gunicorn server:app --workers 1 --worker-class=utils.r_uvicorn_worker.RestartableUvicornWorker  --bind 0.0.0.0:8080 --reload\n\
+command=/opt/conda/envs/py38/bin/gunicorn server:app --workers 1 --worker-class=uvicorn.workers.UvicornWorker  --bind 0.0.0.0:8080 --reload\n\
 autorestart=true\n\
 startretries=100\n\
 redirect_stderr=true\n\
