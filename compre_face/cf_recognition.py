@@ -1,4 +1,6 @@
 import time
+from copy import copy
+from pathlib import Path
 from threading import Thread
 from compreface.service import RecognitionService
 import cv2
@@ -8,11 +10,11 @@ import random
 from utils.log import lr_init
 
 logger = lr_init()
-
+root = Path(__file__).parent
 class ThreadedCamera:
     def __init__(self, url, cf_rec: RecognitionService):
-        self.frame = cv2.imread("/compre_face/steven.jpeg")
-        self.frame_draw_msg = cv2.imread("/compre_face/steven.jpeg")
+        self.frame = cv2.imread(f"{str(root/'steven.jpeg')}")
+        self.frame_draw_msg = cv2.imread(f"{str(root/'steven.jpeg')}")
         self.active = True
         self.url = url
         self.current_instruction = None  # 当前指令
@@ -24,7 +26,7 @@ class ThreadedCamera:
         # 初始化人脸识别服务
         self.recognition = cf_rec
 
-        self.FPS = 1 / 30
+        self.FPS = 1 / 30 if url == 0 else 1 / int(self.capture.get(cv2.CAP_PROP_FPS))
 
         # 启动线程
         self.thread = Thread(target=self.show_frame, args=())
@@ -44,14 +46,14 @@ class ThreadedCamera:
                 continue
 
             # 对人脸处理
-            if self.results and status:
+            if self.results:
                 if self.status_code == 0:
                     self.generate_instruction()
                     self.status_code = 1
                 results = self.results
-                print(results)
+                # print(results)
                 for result in results:
-                    self.frame_draw_msg = draw_all(self.frame, result, self.status_code)
+                    self.frame_draw_msg = draw_all(copy(self.frame), result, self.status_code)
             else:
                 self.frame_draw_msg = self.frame
                 self.status_code = 0

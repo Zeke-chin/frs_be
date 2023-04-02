@@ -63,8 +63,12 @@ async def generate_video() -> Generator[bytes, None, None]:
 #             pass
 #         await asyncio.sleep(threaded_camera.FPS)
 
+# 截图
 def screenshot():
     threaded_camera.update()
     screenshot = np2bytes(threaded_camera.frame)
     return upload_file(screenshot)
+
+def get_status():
+    return threaded_camera.status_code
 
