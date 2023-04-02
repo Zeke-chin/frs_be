@@ -14,6 +14,7 @@ class ThreadedCamera:
         self.frame = cv2.imread("/compre_face/steven.jpeg")
         self.frame_draw_msg = cv2.imread("/compre_face/steven.jpeg")
         self.active = True
+        self.url = url
         self.current_instruction = None  # 当前指令
         self.status_code = 0  # 初始化状态码
         self.results = []
@@ -36,8 +37,11 @@ class ThreadedCamera:
         while self.capture.isOpened():
             (status, frame_raw) = self.capture.read()
             # 镜像反转
-            self.frame = cv2.flip(frame_raw, 1)
-            # self.frame = frame_raw
+            self.frame = cv2.flip(frame_raw, 1) if self.url == 0 else frame_raw
+            # 如果已到达视频末尾，将帧指针重置到第一帧
+            if not status:
+                self.capture.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                continue
 
             # 对人脸处理
             if self.results and status:
@@ -45,7 +49,7 @@ class ThreadedCamera:
                     self.generate_instruction()
                     self.status_code = 1
                 results = self.results
-                # print(self.)
+                print(results)
                 for result in results:
                     self.frame_draw_msg = draw_all(self.frame, result, self.status_code)
             else:

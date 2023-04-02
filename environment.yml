@@ -8,8 +8,8 @@ channels:
   - defaults
 dependencies:
   - ipython=8.10.0
-  - psycopg2=2.9.5
   - python=3.8.16
+  - psycopg2
   - pip
   - pip:
       - bcrypt==4.0.1
