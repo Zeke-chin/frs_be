@@ -1,6 +1,7 @@
 import configparser
 import json
 import os
+from pathlib import Path
 
 
 class DefaultOption(dict):
@@ -23,6 +24,7 @@ class DefaultOption(dict):
 config = configparser.ConfigParser()
 
 
-config.read_file(open('config.ini'))
+root = Path(__file__).parent.parent
+config.read_file(open(str(root / 'config.ini')))
 
 print(config.get('DATABASE', 'host'))

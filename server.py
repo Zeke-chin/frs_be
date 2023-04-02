@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
-
+import cv2
 from app.models.database import Base, engine
 from utils.log import format_print
 from app.routers.user import router_user
-from app.routers.core import router_video
+from app.routers.cf import router_video
 from app.routers.file import router_file
+from app.routers.verify import router_verify
 
 # 初始化 - FastAPI
 format_print()
@@ -23,13 +24,13 @@ app.add_middleware(
 )
 
 
-# 初始化模型对象
-
 
 print('server init finish:)!!!')
 app.include_router(router_user)
 app.include_router(router_video)
 app.include_router(router_file)
+app.include_router(router_video)
+app.include_router(router_verify)
 
 async def ping():
     return "pong"

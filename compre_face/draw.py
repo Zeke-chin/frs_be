@@ -19,18 +19,21 @@ def draw_all(image, result, status_code):
     elif status_code == -1: # 红色
         color = (0, 0, 255)
     draw_pipline = []
-    if result["box"]:
+    if 'box' in result:
         image_ = draw_box(image, result)  # bv = box_val(result)
-    if result["subjects"]:
+    if 'landmarks' in result:
+        image_ = draw_ports(image_, result)
+    if 'subjects' in result:
         draw_pipline.append(text_subject(result))
-    if result["age"]:
+    if 'age' in result:
         draw_pipline.append(text_age(result))
-    if result["gender"]:
+    if 'gender' in result:
         draw_pipline.append(text_gender(result))
-    if result["mask"]:
+    if 'mask' in result:
         draw_pipline.append(text_mask(result))
-    if result["pose"]:
+    if 'pose' in result:
         draw_pipline.append(text_pose(result))
+
     return cv_put_text_pipline(image_, draw_pipline)
 
 
@@ -66,6 +69,13 @@ def draw_box(image, result):
     cv2.rectangle(img=image, pt1=(l, t), pt2=(r, b), color=color, thickness=2)
     return image
 
+def draw_ports(image, result):
+    global color
+    landmarks = result['landmarks']
+    for landmark in landmarks:
+        x, y = landmark
+        cv2.circle(image, (x, y), 3, color, -1)
+    return image
 
 def box_val(result):
     box_dict = result['box']

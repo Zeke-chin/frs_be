@@ -8,26 +8,17 @@ from compreface.service import RecognitionService
 from typing import Generator
 from compre_face import *
 from utils.image import *
+from compre_face.cf_core import compre_face
 
-HOST = config.get("COMPREFACE", "HOST")
-PORT = config.get("COMPREFACE", "PORT")
 RECOGNITION_TOKEN = config.get("COMPREFACE", "RECOGNITION_TOKEN")
 VIDEO_URL = 0 if config.get("COMPREFACE", "VIDEO_URL") == "0" else config.get("COMPREFACE", "VIDEO_URL")
 
 # 初始化识别模型对象
-compre_face: CompreFace = CompreFace(HOST,  # 服务器地址
-                                     PORT,  # 服务器端口
-                                     {"limit": 1,  # 要识别的图像上的最大人脸数。它首先识别最大的面孔。值为 0 表示没有限制
-                                      "det_prob_threshold": 0.8,  # 检测阈值
-                                      "prediction_count": 1,  # 识别结果数量
-                                      "face_plugins": "age,gender,pose,landmarks,mask",  # 人脸识别插件
-                                      "status": False})  # 系统信息
+
 cf_recognition: RecognitionService = compre_face.init_face_recognition(RECOGNITION_TOKEN)
 
 # 初始化 - 算法
-
 threaded_camera = ThreadedCamera(VIDEO_URL, cf_recognition)
-print("算法初始化完成")
 
 
 async def generate_video() -> Generator[bytes, None, None]:

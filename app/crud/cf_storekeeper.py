@@ -1,4 +1,4 @@
-from .compre_face import cf_recognition
+from .re_face import cf_recognition
 from pathlib import Path
 
 cf_storekeeper = cf_recognition.get_face_collection()

@@ -30,6 +30,7 @@ def screenshot():
 def status():
     return crud.get_status()
 
+
 # @router_video.websocket("/ws")
 # async def websocket_video(websocket: WebSocket):
 #     await websocket.accept()

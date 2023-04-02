@@ -3,7 +3,7 @@ from typing import List
 from app import models, schemas
 from sqlalchemy.orm import Session
 from app.crud.basic import update_to_db
-from app.crud.compre_face import cf_recognition
+from app.crud.re_face import cf_recognition
 from app.crud.cf_storekeeper import face_add, subject_del
 
 
