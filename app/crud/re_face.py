@@ -38,6 +38,7 @@ async def generate_video() -> Generator[bytes, None, None]:
             pass
         await asyncio.sleep(threaded_camera.FPS * 1.5)
 
+
 # async def generate_video_wx() -> Generator[bytes, None, None]:
 #     while threaded_camera.is_active():
 #         # 获取处理后的帧
@@ -60,6 +61,6 @@ def screenshot():
     screenshot = np2bytes(threaded_camera.frame)
     return upload_file(screenshot)
 
+
 def get_status():
     return threaded_camera.status_code
-

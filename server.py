@@ -23,14 +23,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
 print('server init finish:)!!!')
 app.include_router(router_user)
 app.include_router(router_video)
 app.include_router(router_file)
 app.include_router(router_video)
 app.include_router(router_verify)
+
 
 async def ping():
     return "pong"

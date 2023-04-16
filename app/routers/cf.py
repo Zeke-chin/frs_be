@@ -18,18 +18,19 @@ router_video = APIRouter(prefix="/video", tags=["video-返回视频流"], )
 async def video_feed():
     return StreamingResponse(crud.generate_video(), media_type="multipart/x-mixed-replace;boundary=frame")
 
+
 @router_video.get("/screenshot", summary="返回截图")
 @web_try()
 @timeit
 def screenshot():
     return crud.screenshot()
 
+
 @router_video.get("/status", summary="返回状态")
 @web_try()
 @timeit
 def status():
     return crud.get_status()
-
 
 # @router_video.websocket("/ws")
 # async def websocket_video(websocket: WebSocket):
