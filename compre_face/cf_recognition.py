@@ -80,7 +80,7 @@ class ThreadedCamera:
     def check_liveness(self, pose):
         elapsed_time = time.time() - self.instruction_start_time
 
-        if elapsed_time <= 8:
+        if elapsed_time <= 3:
             if self.current_instruction in pose:
                 self.status_code = 3
                 self.current_instruction = None

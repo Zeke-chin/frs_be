@@ -19,8 +19,6 @@ def subject_del(subject_name: str):
     try:
         res = cf_subjects.delete(subject_name)
         print('del', res)
-        if res['subject'] != subject_name:
-            raise "删除失败"
         return True
     except Exception as e:
         raise e

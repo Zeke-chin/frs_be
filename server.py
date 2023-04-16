@@ -8,6 +8,7 @@ from app.routers.user import router_user
 from app.routers.cf import router_video
 from app.routers.file import router_file
 from app.routers.verify import router_verify
+from app.routers.log import router_log
 
 # 初始化 - FastAPI
 format_print()
@@ -29,6 +30,7 @@ app.include_router(router_video)
 app.include_router(router_file)
 app.include_router(router_video)
 app.include_router(router_verify)
+app.include_router(router_log)
 
 
 async def ping():

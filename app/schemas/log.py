@@ -6,7 +6,7 @@ from faker import Faker
 faker = Faker(locale='zh_CN')
 
 
-class Loger(BaseModel):
-    data: int
+class LogerLine(BaseModel):
+    date: int
     level: str
     message: str
