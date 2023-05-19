@@ -10,14 +10,16 @@ en2ch = {"female": "女", "male": "男", "without_mask": "无口罩", "with_mask
 global color
 color = (0, 255, 255)
 
+
 def draw_all(image, result, status_code):
     global color
-    if status_code == 1: # 黄色
-        color = (0, 255, 255)
-    elif status_code == 3: # 绿色
-        color = (0, 255, 0)
-    elif status_code == -1: # 红色
-        color = (0, 0, 255)
+    # if status_code == 1: # 黄色
+    #     color = (0, 255, 255)
+    # elif status_code == 3: # 绿色
+    #     color = (0, 255, 0)
+    # elif status_code == -1: # 红色
+    #     color = (0, 0, 255)
+    color = (0, 255, 0)
     draw_pipline = []
     if 'box' in result:
         image_ = draw_box(image, result)  # bv = box_val(result)
@@ -69,6 +71,7 @@ def draw_box(image, result):
     cv2.rectangle(img=image, pt1=(l, t), pt2=(r, b), color=color, thickness=2)
     return image
 
+
 def draw_ports(image, result):
     global color
     landmarks = result['landmarks']
@@ -76,6 +79,7 @@ def draw_ports(image, result):
         x, y = landmark
         cv2.circle(image, (x, y), 3, color, -1)
     return image
+
 
 def box_val(result):
     box_dict = result['box']
